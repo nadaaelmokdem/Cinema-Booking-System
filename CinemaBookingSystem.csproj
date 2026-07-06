@@ -1,0 +1,64 @@
+@model List<Booking>
+@{
+    ViewData["Title"] = "My Bookings";
+    var now = DateTime.Now;
+}
+
+<h1>My Bookings</h1>
+
+@if (!Model.Any())
+{
+    <p class="text-muted">You have no bookings yet. <a asp-controller="Movies" asp-action="Index">Browse movies</a> to get started.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Movie</th>
+                <th>Cinema / Hall</th>
+                <th>Showtime</th>
+                <th>Seats</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Model)
+            {
+                var showtime = booking.Showtime;
+                var started = showtime is not null && showtime.StartTime <= now;
+                <tr>
+                    <td data-label="Movie">@showtime?.Movie?.Title</td>
+                    <td data-label="Cinema / Hall">@showtime?.Hall?.Cinema?.Name / @showtime?.Hall?.Name</td>
+                    <td data-label="Showtime">@showtime?.StartTime.ToString("ddd, dd MMM yyyy - HH:mm")</td>
+                    <td data-label="Seats">@booking.NumberOfSeats</td>
+                    <td data-label="Total">@booking.TotalPrice.ToString("C")</td>
+                    <td data-label="Status">
+                        @if (booking.IsCancelled)
+                        {
+                            <span class="badge badge-muted">Cancelled</span>
+                        }
+                        else if (started)
+                        {
+                            <span class="badge badge-info">Past</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-success">Upcoming</span>
+                        }
+                    </td>
+                    <td data-label="">
+                        @if (!booking.IsCancelled && !started)
+                        {
+                            <form asp-action="Cancel" asp-route-id="@booking.Id" method="post" onsubmit="return confirm('Cancel this booking?');">
+                                <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
