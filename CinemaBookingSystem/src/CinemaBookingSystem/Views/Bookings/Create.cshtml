@@ -1,0 +1,64 @@
+@model BookingCreateViewModel
+@{
+    ViewData["Title"] = "Book Tickets";
+}
+
+<h1>Book Tickets</h1>
+
+<div class="booking-summary">
+    <h3>@Model.MovieTitle</h3>
+    <p>@Model.CinemaName &middot; @Model.HallName</p>
+    <p>@Model.StartTime.ToString("ddd, dd MMM yyyy - HH:mm")</p>
+    <p>Price per ticket: <strong id="ticketPrice" data-price="@Model.TicketPrice.ToString("F2")">@Model.TicketPrice.ToString("C")</strong></p>
+    <p>Seats available: <strong>@Model.SeatsAvailable</strong></p>
+</div>
+
+<form asp-action="Create" method="post" class="form">
+    <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+    <input type="hidden" asp-for="ShowtimeId" />
+    <input type="hidden" asp-for="MovieTitle" />
+    <input type="hidden" asp-for="CinemaName" />
+    <input type="hidden" asp-for="HallName" />
+    <input type="hidden" asp-for="StartTime" />
+    <input type="hidden" asp-for="TicketPrice" />
+    <input type="hidden" asp-for="SeatsAvailable" />
+
+    <div class="form-group">
+        <label asp-for="NumberOfSeats"></label>
+        <input asp-for="NumberOfSeats" id="numberOfSeats" type="number" min="1" max="@Model.SeatsAvailable" class="form-control" />
+        <span asp-validation-for="NumberOfSeats" class="field-error"></span>
+    </div>
+
+    <div class="total-price-box">
+        Total: <span id="totalPrice">@((Model.TicketPrice * Model.NumberOfSeats).ToString("C"))</span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Confirm Booking</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            var priceEl = document.getElementById('ticketPrice');
+            var pricePerSeat = parseFloat(priceEl.dataset.price);
+            var seatsInput = document.getElementById('numberOfSeats');
+            var totalEl = document.getElementById('totalPrice');
+
+            function formatCurrency(value) {
+                return value.toLocaleString(undefined, { style: 'currency', currency: 'USD' });
+            }
+
+            function updateTotal() {
+                var seats = parseInt(seatsInput.value, 10);
+                if (isNaN(seats) || seats < 1) {
+                    seats = 0;
+                }
+                totalEl.textContent = formatCurrency(pricePerSeat * seats);
+            }
+
+            seatsInput.addEventListener('input', updateTotal);
+            updateTotal();
+        })();
+    </script>
+}

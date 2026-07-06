@@ -1,0 +1,49 @@
+@model Showtime
+@{
+    ViewData["Title"] = "Edit Showtime";
+    var movies = ViewBag.Movies as List<Movie> ?? new List<Movie>();
+    var halls = ViewBag.Halls as List<Hall> ?? new List<Hall>();
+}
+
+<h1>Edit Showtime</h1>
+
+<form asp-action="Edit" asp-route-id="@Model.Id" method="post" class="form form-narrow">
+    <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="MovieId"></label>
+        <select asp-for="MovieId" class="form-control">
+            @foreach (var m in movies)
+            {
+                <option value="@m.Id" selected="@(m.Id == Model.MovieId)">@m.Title (@m.DurationMinutes min)</option>
+            }
+        </select>
+        <span asp-validation-for="MovieId" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="HallId"></label>
+        <select asp-for="HallId" class="form-control">
+            @foreach (var h in halls)
+            {
+                <option value="@h.Id" selected="@(h.Id == Model.HallId)">@h.Cinema?.Name - @h.Name (@h.Capacity seats)</option>
+            }
+        </select>
+        <span asp-validation-for="HallId" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="StartTime"></label>
+        <input asp-for="StartTime" type="datetime-local" class="form-control" />
+        <span asp-validation-for="StartTime" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="TicketPrice"></label>
+        <input asp-for="TicketPrice" type="number" step="0.01" class="form-control" />
+        <span asp-validation-for="TicketPrice" class="field-error"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

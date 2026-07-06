@@ -1,0 +1,29 @@
+@model List<Showtime>
+@{
+    ViewData["Title"] = "Showtimes";
+}
+
+<h1>Showtimes</h1>
+<a class="btn btn-primary" asp-action="Create">+ New Showtime</a>
+
+<table class="table">
+    <thead><tr><th>Movie</th><th>Cinema / Hall</th><th>Start Time</th><th>Price</th><th>Booked / Capacity</th><th></th></tr></thead>
+    <tbody>
+        @foreach (var s in Model)
+        {
+            <tr>
+                <td data-label="Movie">@s.Movie?.Title</td>
+                <td data-label="Cinema / Hall">@s.Hall?.Cinema?.Name / @s.Hall?.Name</td>
+                <td data-label="Start Time">@s.StartTime.ToString("ddd, dd MMM yyyy - HH:mm")</td>
+                <td data-label="Price">@s.TicketPrice.ToString("C")</td>
+                <td data-label="Booked / Capacity">@s.SeatsBooked / @s.Hall?.Capacity</td>
+                <td data-label="">
+                    <a class="btn btn-secondary btn-sm" asp-action="Edit" asp-route-id="@s.Id">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@s.Id" method="post" class="inline-form" onsubmit="return confirm('Delete this showtime?');">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

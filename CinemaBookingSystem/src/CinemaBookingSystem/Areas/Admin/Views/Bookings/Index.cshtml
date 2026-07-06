@@ -1,0 +1,52 @@
+@model List<Booking>
+@{
+    ViewData["Title"] = "All Bookings";
+}
+
+<h1>All Bookings</h1>
+
+@if (!Model.Any())
+{
+    <p class="text-muted">No bookings have been made yet.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Movie</th>
+                <th>Cinema / Hall</th>
+                <th>Showtime</th>
+                <th>Seats</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Booked At</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var b in Model)
+            {
+                <tr>
+                    <td data-label="User">@b.User?.FullName (@b.User?.Email)</td>
+                    <td data-label="Movie">@b.Showtime?.Movie?.Title</td>
+                    <td data-label="Cinema / Hall">@b.Showtime?.Hall?.Cinema?.Name / @b.Showtime?.Hall?.Name</td>
+                    <td data-label="Showtime">@b.Showtime?.StartTime.ToString("ddd, dd MMM yyyy - HH:mm")</td>
+                    <td data-label="Seats">@b.NumberOfSeats</td>
+                    <td data-label="Total">@b.TotalPrice.ToString("C")</td>
+                    <td data-label="Status">
+                        @if (b.IsCancelled)
+                        {
+                            <span class="badge badge-muted">Cancelled</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-success">Active</span>
+                        }
+                    </td>
+                    <td data-label="Booked At">@b.BookedAt.ToString("dd MMM yyyy HH:mm")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

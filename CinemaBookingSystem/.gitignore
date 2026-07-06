@@ -1,0 +1,24 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+
+## Database (SQLite dev DB - do not commit real data)
+*.db
+*.db-shm
+*.db-wal
+
+## IDE
+.vs/
+.vscode/
+*.swp
+
+## OS
+.DS_Store
+Thumbs.db
+
+## Uploaded posters - keep the folder, ignore uploaded content
+src/CinemaBookingSystem/wwwroot/images/posters/*
+!src/CinemaBookingSystem/wwwroot/images/posters/.gitkeep
+!src/CinemaBookingSystem/wwwroot/images/posters/placeholder.png

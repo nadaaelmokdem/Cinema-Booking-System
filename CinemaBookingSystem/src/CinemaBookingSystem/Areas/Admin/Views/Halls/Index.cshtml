@@ -1,0 +1,27 @@
+@model List<Hall>
+@{
+    ViewData["Title"] = "Halls";
+}
+
+<h1>Halls</h1>
+<a class="btn btn-primary" asp-action="Create">+ New Hall</a>
+
+<table class="table">
+    <thead><tr><th>Cinema</th><th>Hall</th><th>Capacity</th><th></th></tr></thead>
+    <tbody>
+        @foreach (var h in Model)
+        {
+            <tr>
+                <td data-label="Cinema">@h.Cinema?.Name</td>
+                <td data-label="Hall">@h.Name</td>
+                <td data-label="Capacity">@h.Capacity</td>
+                <td data-label="">
+                    <a class="btn btn-secondary btn-sm" asp-action="Edit" asp-route-id="@h.Id">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@h.Id" method="post" class="inline-form" onsubmit="return confirm('Delete this hall?');">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

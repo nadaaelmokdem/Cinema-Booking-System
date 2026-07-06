@@ -1,0 +1,26 @@
+@model List<Category>
+@{
+    ViewData["Title"] = "Categories";
+}
+
+<h1>Categories</h1>
+<a class="btn btn-primary" asp-action="Create">+ New Category</a>
+
+<table class="table">
+    <thead><tr><th>Name</th><th>Movies</th><th></th></tr></thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td data-label="Name">@c.Name</td>
+                <td data-label="Movies">@c.Movies.Count</td>
+                <td data-label="">
+                    <a class="btn btn-secondary btn-sm" asp-action="Edit" asp-route-id="@c.Id">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@c.Id" method="post" class="inline-form" onsubmit="return confirm('Delete this category?');">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

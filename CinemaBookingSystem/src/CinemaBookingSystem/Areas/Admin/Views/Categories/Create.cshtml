@@ -1,0 +1,21 @@
+@model Category
+@{
+    ViewData["Title"] = "New Category";
+}
+
+<h1>New Category</h1>
+
+<form asp-action="Create" method="post" class="form form-narrow">
+    <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="field-error"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

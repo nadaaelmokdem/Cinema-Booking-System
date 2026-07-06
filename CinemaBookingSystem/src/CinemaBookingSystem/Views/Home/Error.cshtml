@@ -1,0 +1,14 @@
+@model CinemaBookingSystem.Models.ErrorViewModel
+@{
+    ViewData["Title"] = "Something went wrong";
+}
+
+<div class="error-page">
+    <h1>💥 500 - Something went wrong</h1>
+    <p>Sorry, an unexpected error occurred while processing your request.</p>
+    @if (Model.ShowRequestId)
+    {
+        <p class="text-muted">Request ID: <code>@Model.RequestId</code></p>
+    }
+    <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Back to Home</a>
+</div>
