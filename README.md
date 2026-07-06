@@ -1,16 +1,62 @@
-# CineBook - Cinema Booking System
+# 🎬 CineBook — Cinema Booking System
 
-An ASP.NET Core MVC (.NET 10) application for browsing movies/showtimes and
-booking cinema tickets, with a separate Admin area for managing the catalog.
+An ASP.NET Core MVC (.NET 10) application for browsing movies and showtimes,
+and booking cinema tickets online — with a separate, role-protected Admin
+area for managing the entire catalog (movies, cinemas, halls, showtimes) and
+viewing all bookings.
 
-## Tech stack
+![.NET 10](https://img.shields.io/badge/.NET-10-512BD4)
+![ASP.NET Core MVC](https://img.shields.io/badge/ASP.NET%20Core-MVC-blue)
+![EF Core](https://img.shields.io/badge/EF%20Core-SQLite-informational)
+![License](https://img.shields.io/badge/license-MIT-green)
+
+## Table of contents
+
+- [Features](#-features)
+- [Tech stack](#-tech-stack)
+- [Project layout](#-project-layout)
+- [Domain model](#-domain-model)
+- [Getting started](#-getting-started)
+- [Default admin account](#-default-admin-account)
+- [Where uploaded posters are stored](#-where-uploaded-posters-are-stored)
+- [Roles & authorization](#-roles--authorization)
+- [Validation & UX](#-validation--ux)
+- [Notes before you submit / deploy](#-notes-before-you-submit--deploy)
+
+## ✨ Features
+
+**Everyone (no account needed)**
+- Browse movies currently showing, filter by category or search by title
+- See full showtimes for a movie — cinema, hall, date/time, price, seats left
+- Browse the list of cinemas and drill into each one's halls & schedule
+
+**Registered customers**
+- Register / log in / log out / change password (ASP.NET Core Identity)
+- Book seats on any showtime that hasn't started yet, with a live-updating
+  total price as you change the seat count — no page reload
+- View upcoming & past bookings, and cancel any booking before its showtime starts
+
+**Admins**
+- Separate `/Admin` area, fully role-protected
+- Manage movies (create/edit/delete, upload posters), categories, cinemas,
+  halls, and showtimes
+- See every booking made across the whole system
+
+**Everywhere**
+- Server-side + client-side validation with errors shown next to each field
+- A clear success/error banner after every create, update, delete, booking,
+  or cancellation
+- Custom, friendly 404 and 500 pages
+- Responsive layout — usable on both desktop and mobile
+
+## 🧱 Tech stack
 
 - ASP.NET Core MVC, .NET 10
 - ASP.NET Core Identity (cookie auth, roles: `Admin`, `Customer`)
 - Entity Framework Core with SQLite (zero-config; swap to SQL Server if you like)
 - Plain CSS + a small amount of vanilla JS (mobile nav toggle, live price calculation)
 
-## Project layout
+## 📁 Project layout
 
 ```
 CinemaBookingSystem.sln
@@ -28,7 +74,7 @@ src/CinemaBookingSystem/
     js/site.js
 ```
 
-## Domain model
+## 🗂 Domain model
 
 - **Category** — 1‑to‑many with Movie (e.g. Action, Drama, Comedy)
 - **Movie** — title, description, duration, release date, poster path, category
@@ -45,7 +91,7 @@ Business rules enforced in the controllers (not just the UI):
 - A Category/Cinema/Hall/Movie that is still referenced (movies, halls, showtimes,
   active bookings) cannot be deleted — the admin gets a clear error message instead.
 
-## Running the project locally
+## 🚀 Getting started
 
 > This repository was written in a sandbox without internet/NuGet access, so the
 > code was authored and reviewed by hand rather than compiled here. Follow the
@@ -87,7 +133,7 @@ Business rules enforced in the controllers (not just the UI):
    - creates the default admin account (see below),
    - seeds a handful of starter categories.
 
-## Default admin account
+## 🔑 Default admin account
 
 | Field    | Value              |
 |----------|--------------------|
@@ -103,7 +149,7 @@ Log in at `/Account/Login`, then visit `/Admin/Movies` (also linked from the top
 nav as "Admin Panel" once you're signed in as an admin) to manage movies,
 categories, cinemas, halls, and showtimes.
 
-## Where uploaded posters are stored
+## 🖼 Where uploaded posters are stored
 
 Poster images uploaded through **Admin → Movies → Create/Edit** are saved to:
 
@@ -117,7 +163,7 @@ and the relative path (e.g. `/images/posters/<guid>.jpg`) is stored on the
 placeholder image is shown on movie cards/pages when no poster has been
 uploaded yet. Allowed formats: `.jpg`, `.jpeg`, `.png`, `.webp`, up to 5 MB.
 
-## Roles & authorization
+## 🔐 Roles & authorization
 
 - Public (no login): Home, Movies list/details, Cinemas list/details.
 - `Customer` role (any logged-in user is auto-enrolled as Customer on
@@ -128,7 +174,7 @@ uploaded yet. Allowed formats: `.jpg`, `.jpeg`, `.png`, `.webp`, up to 5 MB.
   non-admins get redirected to an Access Denied page even if they guess the URL.
   Admin-only nav links are also hidden in the layout for non-admins.
 
-## Validation & UX
+## ✅ Validation & UX
 
 - All form models use Data Annotations (`[Required]`, `[Range]`, `[StringLength]`,
   `[Compare]`, etc.) which drive both server-side `ModelState` validation and
@@ -146,7 +192,7 @@ uploaded yet. Allowed formats: `.jpg`, `.jpeg`, `.png`, `.webp`, up to 5 MB.
   reflow into stacked cards on mobile (see the `@media (max-width: 768px)`
   block in `wwwroot/css/site.css`).
 
-## Notes / things to double check before submitting
+## 📝 Notes before you submit / deploy
 
 - Run `dotnet ef migrations add InitialCreate` locally as described above and
   commit the generated `Migrations/*.cs` files — the repo currently has an
