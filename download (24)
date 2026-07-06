@@ -1,0 +1,31 @@
+@model List<Movie>
+@{
+    ViewData["Title"] = "Movies";
+}
+
+<h1>Movies</h1>
+<a class="btn btn-primary" asp-action="Create">+ New Movie</a>
+
+<table class="table">
+    <thead><tr><th>Poster</th><th>Title</th><th>Category</th><th>Duration</th><th>Showing?</th><th></th></tr></thead>
+    <tbody>
+        @foreach (var m in Model)
+        {
+            <tr>
+                <td data-label="Poster">
+                    <img src="@(string.IsNullOrEmpty(m.PosterPath) ? "/images/posters/placeholder.png" : m.PosterPath)" alt="@m.Title" class="thumb" />
+                </td>
+                <td data-label="Title">@m.Title</td>
+                <td data-label="Category">@m.Category?.Name</td>
+                <td data-label="Duration">@m.DurationMinutes min</td>
+                <td data-label="Showing?">@(m.IsShowing ? "Yes" : "No")</td>
+                <td data-label="">
+                    <a class="btn btn-secondary btn-sm" asp-action="Edit" asp-route-id="@m.Id">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@m.Id" method="post" class="inline-form" onsubmit="return confirm('Delete this movie?');">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

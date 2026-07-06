@@ -1,0 +1,23 @@
+@model List<Cinema>
+@{
+    ViewData["Title"] = "Cinemas";
+}
+
+<h1>Our Cinemas</h1>
+
+<div class="cinema-grid">
+    @foreach (var cinema in Model)
+    {
+        <div class="cinema-card">
+            <h3>@cinema.Name</h3>
+            <p class="text-muted">@cinema.Address, @cinema.City</p>
+            <p>@cinema.Halls.Count hall(s)</p>
+            <a class="btn btn-secondary" asp-action="Details" asp-route-id="@cinema.Id">View Details</a>
+        </div>
+    }
+</div>
+
+@if (!Model.Any())
+{
+    <p class="text-muted">No cinemas have been added yet.</p>
+}
